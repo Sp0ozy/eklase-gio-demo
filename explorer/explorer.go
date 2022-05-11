@@ -20,6 +20,10 @@ func Drives() []string {
 	} else {
 		drives = bitsToDrives(uint32(ret))
 	}
+	for j := 0; j != len(drives); j++ {
+		drives[j] = drives[j] + ":"
+	}
+	fmt.Println(drives)
 	return drives
 
 }
@@ -36,7 +40,7 @@ func bitsToDrives(bitMap uint32) (drives []string) {
 	return
 }
 
-func listAll() (files []fs.FileInfo) {
+func ListAll() (files []fs.FileInfo) {
 	l := Drives()
 	for j := 0; j != len(l); j++ {
 		l[j] = l[j] + ":\\"
@@ -59,4 +63,29 @@ func listAll() (files []fs.FileInfo) {
 		}
 	}
 	return files
+}
+func root(r []string) (root string) {
+	for _, v := range r {
+		root = root + v + "\\"
+	}
+	return root
+}
+func List(r []string) (names []string) {
+	root := root(r)
+	f, err := os.Open(root)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	files, err := f.Readdir(0)
+	if err != nil {
+		fmt.Println(err)
+		return nil
+	}
+
+	for _, v := range files {
+		fmt.Println(v.Name())
+		names = append(names, v.Name())
+	}
+	return names
 }
