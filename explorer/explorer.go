@@ -1,6 +1,10 @@
 package explorer
 
 import (
+	"fmt"
+	"io/fs"
+	"log"
+	"os"
 	"syscall"
 )
 
@@ -30,4 +34,29 @@ func bitsToDrives(bitMap uint32) (drives []string) {
 		bitMap >>= 1
 	}
 	return
+}
+
+func listAll() (files []fs.FileInfo) {
+	l := Drives()
+	for j := 0; j != len(l); j++ {
+		l[j] = l[j] + ":\\"
+	}
+	log.Println(l)
+	for i := 0; i != len(l); i++ {
+		f, err := os.Open(l[i])
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		files, err := f.Readdir(0)
+		if err != nil {
+			fmt.Println(err)
+			return nil
+		}
+
+		for _, v := range files {
+			fmt.Println(v.Name(), v.IsDir())
+		}
+	}
+	return files
 }
