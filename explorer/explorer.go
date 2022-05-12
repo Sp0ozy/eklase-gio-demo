@@ -6,40 +6,52 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"syscall"
+
+	"github.com/shirou/gopsutil/disk"
 )
 
 func Drives() []string {
 
-	kernel32, _ := syscall.LoadLibrary("kernel32.dll")
-	getLogicalDrivesHandle, _ := syscall.GetProcAddress(kernel32, "GetLogicalDrives")
+	// kernel32, _ := syscall.LoadLibrary("kernel32.dll")
+	// getLogicalDrivesHandle, _ := syscall.GetProcAddress(kernel32, "GetLogicalDrives")
 
-	var drives []string
+	// var drives []string
 
-	if ret, _, callErr := syscall.Syscall(uintptr(getLogicalDrivesHandle), 0, 0, 0, 0); callErr != 0 {
+	// if ret, _, callErr := syscall.Syscall(uintptr(getLogicalDrivesHandle), 0, 0, 0, 0); callErr != 0 {
 
-	} else {
-		drives = bitsToDrives(uint32(ret))
+	// } else {
+	// 	drives = bitsToDrives(uint32(ret))
+	// }
+	// for j := 0; j != len(drives); j++ {
+	// 	drives[j] = drives[j] + ":"
+	// }
+	// fmt.Println(drives)
+	p, err := disk.Partitions( /*all*/ true)
+	if err != nil {
+		log.Fatal(err)
 	}
-	for j := 0; j != len(drives); j++ {
-		drives[j] = drives[j] + ":"
+	drives := make([]string, len(p))
+	for i := range p {
+
+		drives[i] = p[i].Mountpoint
+		fmt.Println(p[i].Mountpoint)
 	}
 	fmt.Println(drives)
 	return drives
 
 }
 
-func bitsToDrives(bitMap uint32) (drives []string) {
-	availableDrives := []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
+// func bitsToDrives(bitMap uint32) (drives []string) {
+// 	availableDrives := []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
 
-	for i := range availableDrives {
-		if bitMap&1 == 1 {
-			drives = append(drives, availableDrives[i])
-		}
-		bitMap >>= 1
-	}
-	return
-}
+// 	for i := range availableDrives {
+// 		if bitMap&1 == 1 {
+// 			drives = append(drives, availableDrives[i])
+// 		}
+// 		bitMap >>= 1
+// 	}
+// 	return
+// }
 
 func ListAll() (files []fs.FileInfo) {
 	l := Drives()

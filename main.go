@@ -26,7 +26,9 @@ func main() {
 	fmt.Println("which dir to use?")
 	var in int
 	fmt.Scanln(&in)
+	fmt.Println(d, len(d))
 	root = append(root, d[in-1])
+
 	for {
 		list := explorer.List(root)
 		fmt.Println("which dir to use?")
