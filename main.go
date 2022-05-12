@@ -31,7 +31,12 @@ func main() {
 		list := explorer.List(root)
 		fmt.Println("which dir to use?")
 		fmt.Scanln(&in)
-		root = append(root, list[in-1])
+		if in == 0 {
+			root = root[:len(root)-1]
+		} else {
+			root = append(root, list[in-1])
+		}
+
 	}
 
 }

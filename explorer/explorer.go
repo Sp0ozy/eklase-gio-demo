@@ -5,6 +5,7 @@ import (
 	"io/fs"
 	"log"
 	"os"
+	"path/filepath"
 	"syscall"
 )
 
@@ -65,10 +66,7 @@ func ListAll() (files []fs.FileInfo) {
 	return files
 }
 func root(r []string) (root string) {
-	for _, v := range r {
-		root = root + v + "\\"
-	}
-	return root
+	return filepath.Join(r...)
 }
 func List(r []string) (names []string) {
 	root := root(r)
