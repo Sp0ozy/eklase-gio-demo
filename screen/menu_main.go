@@ -45,7 +45,7 @@ func MainMenu(th *material.Theme, state *state.State) Screen {
 			return ListStudent(th, state), d
 		}
 		if explorer.Clicked() {
-			return Explorera(th, state), d
+			return Explorer(th, state), d
 		}
 		if quit.Clicked() {
 			state.Quit()
