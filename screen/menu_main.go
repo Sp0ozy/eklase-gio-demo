@@ -26,7 +26,7 @@ func MainMenu(th *material.Theme, state *state.State) Screen {
 		matListBut.Font = text.Font{Variant: "Mono", Weight: text.Bold, Style: text.Italic}
 		matListBut.Background = color.NRGBA{A: 0xff, R: 0x3C, G: 0x3C, B: 0x3C}
 		matQuitBut := material.Button(th, &quit, "Quit")
-		matQuitBut.Font = text.Font{Variant: "Smallcaps", Style: text.Italic}
+		matQuitBut.Font = text.Font{Variant: "Mono", Weight: text.Bold, Style: text.Italic}
 		matQuitBut.Background = color.NRGBA{A: 0xff, R: 0x3C, G: 0x3C, B: 0x3C}
 		matExpBut := material.Button(th, &explorer, "Explore")
 		matExpBut.Font = text.Font{Variant: "Mono", Weight: text.Bold, Style: text.Italic}
