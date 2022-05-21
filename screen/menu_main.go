@@ -25,18 +25,18 @@ func MainMenu(th *material.Theme, state *state.State) Screen {
 		matListBut := material.Button(th, &list, "List students")
 		matListBut.Font = text.Font{Variant: "Mono", Weight: text.Bold, Style: text.Italic}
 		matListBut.Background = color.NRGBA{A: 0xff, R: 0x3C, G: 0x3C, B: 0x3C}
-		matQuitBut := material.Button(th, &quit, "Quit")
-		matQuitBut.Font = text.Font{Variant: "Mono", Weight: text.Bold, Style: text.Italic}
-		matQuitBut.Background = color.NRGBA{A: 0xff, R: 0x3C, G: 0x3C, B: 0x3C}
 		matExpBut := material.Button(th, &explorer, "Explore")
 		matExpBut.Font = text.Font{Variant: "Mono", Weight: text.Bold, Style: text.Italic}
 		matExpBut.Background = color.NRGBA{A: 0xff, R: 0x3C, G: 0x3C, B: 0x3C}
+		matQuitBut := material.Button(th, &quit, "Quit")
+		matQuitBut.Font = text.Font{Variant: "Mono", Weight: text.Bold, Style: text.Italic}
+		matQuitBut.Background = color.NRGBA{A: 0xff, R: 0x3C, G: 0x3C, B: 0x3C}
 
 		d := layout.Flex{Axis: layout.Vertical}.Layout(gtx,
 			layout.Rigid(rowInset(matAddBut.Layout)),
 			layout.Rigid(rowInset(matListBut.Layout)),
-			layout.Rigid(rowInset(matQuitBut.Layout)),
 			layout.Rigid(rowInset(matExpBut.Layout)),
+			layout.Rigid(rowInset(matQuitBut.Layout)),
 		)
 		if add.Clicked() {
 			return AddStudent(th, state), d
