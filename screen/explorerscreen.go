@@ -54,6 +54,9 @@ func Explorer(th *material.Theme, state *state.State) Screen {
 	}
 	for _, str := range f {
 		var cnt int
+		if str[0] == '.' {
+			continue
+		}
 		for i := range str {
 			if str[i] == '.' {
 				cnt++
