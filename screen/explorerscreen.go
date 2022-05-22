@@ -3,6 +3,7 @@ package screen
 import (
 	"eklase/explorer"
 	"eklase/state"
+	"eklase/storage"
 	"image"
 	"log"
 
@@ -44,13 +45,27 @@ func generateFileList(th *material.Theme, list widget.List, files []string, butt
 }
 
 func Explorer(th *material.Theme, state *state.State) Screen {
-	var root []string
-	var files []string
+	var files, f, root []string
 	root = explorer.GetRoot()
 	if root == nil {
-		files = explorer.Drives()
+		f = explorer.Drives()
 	} else {
-		files = explorer.List(root)
+		f = explorer.List(root)
+	}
+	for _, str := range f {
+		var cnt int
+		for i := range str {
+			if str[i] == '.' {
+				cnt++
+				if str[i+1] == 'd' && str[i+2] == 'b' && len(str) == i+3 {
+					files = append(files, str)
+					continue
+				}
+			}
+		}
+		if cnt == 0 {
+			files = append(files, str)
+		}
 	}
 
 	var close widget.Clickable
@@ -75,6 +90,10 @@ func Explorer(th *material.Theme, state *state.State) Screen {
 		)
 		for i := range button {
 			if button[i].Clicked() {
+				if checnkdb(files[i]) {
+					storage.Open(explorer.Root(root) + files[i])
+					return MainMenu(th, state), d
+				}
 				root = append(root, files[i])
 				explorer.SaveRoot(root)
 				return Explorer(th, state), d
@@ -93,4 +112,17 @@ func Explorer(th *material.Theme, state *state.State) Screen {
 		}
 		return nil, d
 	}
+}
+
+func checnkdb(str string) bool {
+	for i := range str {
+		if str[i] == '.' {
+
+			if str[i+1] == 'd' && str[i+2] == 'b' && len(str) == i+3 {
+				return true
+
+			}
+		}
+	}
+	return false
 }

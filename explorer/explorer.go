@@ -78,11 +78,11 @@ func ListAll() (files []fs.FileInfo) {
 	}
 	return files
 }
-func root(r []string) (root string) {
+func Root(r []string) (root string) {
 	return filepath.Join(r...)
 }
 func List(r []string) (names []string) {
-	root := root(r)
+	root := Root(r)
 	f, err := os.Open(root)
 	if err != nil {
 		fmt.Println(err)
