@@ -3,7 +3,6 @@ package screen
 import (
 	"eklase/explorer"
 	"eklase/state"
-	"fmt"
 	"image"
 	"log"
 
@@ -45,15 +44,18 @@ func generateFileList(th *material.Theme, list widget.List, files []string, butt
 }
 
 func Explorer(th *material.Theme, state *state.State) Screen {
-	d := explorer.Drives()
 	var root []string
-	fmt.Println(d, len(d))
-	fmt.Println(root)
-	root = append(root, "C:")
-	fmt.Println(root)
-	files := explorer.List(root)
+	var files []string
+	root = explorer.GetRoot()
+	if root == nil {
+		files = explorer.Drives()
+	} else {
+		files = explorer.List(root)
+	}
 
 	var close widget.Clickable
+	var back widget.Clickable
+
 	list := widget.List{List: layout.List{Axis: layout.Vertical}}
 	students, err := state.Students()
 	if err != nil {
@@ -68,14 +70,21 @@ func Explorer(th *material.Theme, state *state.State) Screen {
 	return func(gtx layout.Context) (Screen, layout.Dimensions) {
 		d := layout.Flex{Axis: layout.Vertical}.Layout(gtx,
 			layout.Flexed(1, rowInset(studentsLayout)),
+			layout.Rigid(rowInset(material.Button(th, &back, "Back").Layout)),
 			layout.Rigid(rowInset(material.Button(th, &close, "Close").Layout)),
 		)
 		for i := range button {
 			if button[i].Clicked() {
-				return MainMenu(th, state), d
+				root = append(root, files[i])
+				explorer.SaveRoot(root)
+				return Explorer(th, state), d
 			}
 		}
-
+		if back.Clicked() {
+			root = root[:len(root)-1]
+			explorer.SaveRoot(root)
+			return Explorer(th, state), d
+		}
 		if close.Clicked() {
 			return MainMenu(th, state), d
 		}

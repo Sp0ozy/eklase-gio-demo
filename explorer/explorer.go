@@ -1,6 +1,7 @@
 package explorer
 
 import (
+	"bufio"
 	"fmt"
 	"io/fs"
 	"log"
@@ -98,4 +99,30 @@ func List(r []string) (names []string) {
 		names = append(names, v.Name())
 	}
 	return names
+}
+
+func SaveRoot(root []string) {
+	var err = os.Remove("screen/root.txt")
+	if err != nil {
+		return
+	}
+	f, e := os.Create("screen/root.txt")
+	if e != nil {
+		log.Fatal(e)
+	}
+	f.Close()
+	f, _ = os.OpenFile("screen/root.txt", os.O_APPEND, 0666)
+	for _, v := range root {
+		f.WriteString(v + "\n")
+	}
+	f.Close()
+}
+func GetRoot() (root []string) {
+	f, _ := os.OpenFile("screen/root.txt", os.O_RDONLY, 0666)
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		root = append(root, scanner.Text())
+	}
+	defer f.Close()
+	return root
 }
