@@ -81,6 +81,9 @@ func Explorer(th *material.Theme, state *state.State) Screen {
 			}
 		}
 		if back.Clicked() {
+			if root == nil {
+				return Explorer(th, state), d
+			}
 			root = root[:len(root)-1]
 			explorer.SaveRoot(root)
 			return Explorer(th, state), d
