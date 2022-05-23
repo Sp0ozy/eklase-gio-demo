@@ -72,6 +72,7 @@ func Explorer(th *material.Theme, state *state.State) Screen {
 
 	var close widget.Clickable
 	var back widget.Clickable
+	var adressbar widget.Clickable
 
 	list := widget.List{List: layout.List{Axis: layout.Vertical}}
 	button := make([]widget.Clickable, len(files))
@@ -80,6 +81,7 @@ func Explorer(th *material.Theme, state *state.State) Screen {
 
 	return func(gtx layout.Context) (Screen, layout.Dimensions) {
 		d := layout.Flex{Axis: layout.Vertical}.Layout(gtx,
+			layout.Rigid(rowInset(material.Button(th, &adressbar, explorer.Root(root)).Layout)),
 			layout.Flexed(1, rowInset(filesLayout)),
 			layout.Rigid(rowInset(material.Button(th, &back, "Back").Layout)),
 			layout.Rigid(rowInset(material.Button(th, &close, "Close").Layout)),
