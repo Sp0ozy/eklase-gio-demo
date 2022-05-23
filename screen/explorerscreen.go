@@ -13,7 +13,7 @@ import (
 	"gioui.org/widget/material"
 )
 
-func Explorera(th *material.Theme, state *state.State) Screen {
+func Explorer(th *material.Theme, state *state.State) Screen {
 	d := explorer.Drives()
 	var root []string
 	fmt.Println(d, len(d))
