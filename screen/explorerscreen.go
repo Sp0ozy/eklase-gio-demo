@@ -72,7 +72,7 @@ func Explorer(th *material.Theme, state *state.State) Screen {
 
 	var close widget.Clickable
 	var back widget.Clickable
-	var adressbar widget.Clickable
+	var adressbar widget.Editor
 
 	list := widget.List{List: layout.List{Axis: layout.Vertical}}
 	button := make([]widget.Clickable, len(files))
@@ -80,11 +80,18 @@ func Explorer(th *material.Theme, state *state.State) Screen {
 	filesLayout := generateFileList(th, list, files, button)
 
 	return func(gtx layout.Context) (Screen, layout.Dimensions) {
+		matBackBut := material.Button(th, &back, "Back")
+		matBackBut.Font = ButtonFontMain()
+		matBackBut.Background = ButtonBacgGroundMain()
+		adressbar.SingleLine = true
+		matCloseBut := material.Button(th, &close, "Close")
+		matCloseBut.Font = ButtonFontMain()
+		matCloseBut.Background = ButtonBacgGroundMain()
 		d := layout.Flex{Axis: layout.Vertical}.Layout(gtx,
-			layout.Rigid(rowInset(material.Button(th, &adressbar, explorer.Root(root)).Layout)),
+			layout.Rigid(rowInset(material.Editor(th, &adressbar, explorer.Root(root)).Layout)),
 			layout.Flexed(1, rowInset(filesLayout)),
-			layout.Rigid(rowInset(material.Button(th, &back, "Back").Layout)),
-			layout.Rigid(rowInset(material.Button(th, &close, "Close").Layout)),
+			layout.Rigid(rowInset(matBackBut.Layout)),
+			layout.Rigid(rowInset(matCloseBut.Layout)),
 		)
 		for i := range button {
 			if button[i].Clicked() {
