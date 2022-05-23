@@ -2,10 +2,8 @@ package screen
 
 import (
 	"eklase/state"
-	"image/color"
 
 	"gioui.org/layout"
-	"gioui.org/text"
 	"gioui.org/widget"
 	"gioui.org/widget/material"
 )
@@ -20,17 +18,17 @@ func MainMenu(th *material.Theme, state *state.State) Screen {
 	)
 	return func(gtx layout.Context) (Screen, layout.Dimensions) {
 		matAddBut := material.Button(th, &add, "Add student")
-		matAddBut.Font = text.Font{Variant: "Mono", Weight: text.Bold, Style: text.Italic}
-		matAddBut.Background = color.NRGBA{A: 0xff, R: 0x3C, G: 0x3C, B: 0x3C}
+		matAddBut.Font = ButtonFontMain()
+		matAddBut.Background = ButtonBacgGroundMain()
 		matListBut := material.Button(th, &list, "List students")
-		matListBut.Font = text.Font{Variant: "Mono", Weight: text.Bold, Style: text.Italic}
-		matListBut.Background = color.NRGBA{A: 0xff, R: 0x3C, G: 0x3C, B: 0x3C}
+		matListBut.Font = ButtonFontMain()
+		matListBut.Background = ButtonBacgGroundMain()
 		matExpBut := material.Button(th, &explorer, "Explore")
-		matExpBut.Font = text.Font{Variant: "Mono", Weight: text.Bold, Style: text.Italic}
-		matExpBut.Background = color.NRGBA{A: 0xff, R: 0x3C, G: 0x3C, B: 0x3C}
+		matExpBut.Font = ButtonFontMain()
+		matExpBut.Background = ButtonBacgGroundMain()
 		matQuitBut := material.Button(th, &quit, "Quit")
-		matQuitBut.Font = text.Font{Variant: "Mono", Weight: text.Bold, Style: text.Italic}
-		matQuitBut.Background = color.NRGBA{A: 0xff, R: 0x3C, G: 0x3C, B: 0x3C}
+		matQuitBut.Font = ButtonFontMain()
+		matQuitBut.Background = ButtonBacgGroundMain()
 
 		d := layout.Flex{Axis: layout.Vertical}.Layout(gtx,
 			layout.Rigid(rowInset(matAddBut.Layout)),
