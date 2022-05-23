@@ -55,27 +55,25 @@ func main() {
 }
 
 func mainLoop(w *app.Window) error {
-	storage := storage.Must(storage.New("school.db"))
-	defer storage.Close()
+	stor, err := storage.Open("school.db")
+	if err != nil {
+		return err
+	}
+	defer stor.Close()
 
-	appState := state.New(storage)
+	appState := state.New(stor)
 
 	th := material.NewTheme(gofont.Collection())
 	currentLayout := screen.MainMenu(th, appState)
 
+	var ops op.Ops
 	for {
 		select {
 		case e := <-w.Events():
 			switch e := e.(type) {
 			case system.FrameEvent:
-				gtx := layout.NewContext(&op.Ops{}, e)
-				layout.UniformInset(unit.Dp(5)).Layout(gtx, func(gtx layout.Context) layout.Dimensions {
-					nextLayout, d := currentLayout(gtx)
-					if nextLayout != nil {
-						currentLayout = nextLayout
-					}
-					return d
-				})
+				gtx := layout.NewContext(&ops, e)
+				currentLayout = layoutScreen(gtx, currentLayout)
 				if appState.ShouldQuit() {
 					w.Perform(system.ActionClose)
 				}
@@ -85,4 +83,14 @@ func mainLoop(w *app.Window) error {
 			}
 		}
 	}
+}
+
+func layoutScreen(gtx layout.Context, s screen.Screen) (next screen.Screen) {
+	layout.UniformInset(unit.Dp(5)).Layout(gtx, func(gtx layout.Context) (d layout.Dimensions) {
+		if next, d = s(gtx); next == nil {
+			next = s
+		}
+		return d
+	})
+	return next
 }
