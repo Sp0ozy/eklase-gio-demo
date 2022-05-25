@@ -18,7 +18,6 @@ import (
 func ListStudent(th *material.Theme, state *state.State) Screen {
 	var close widget.Clickable
 	list := widget.List{List: layout.List{Axis: layout.Vertical}}
-
 	lightContrast := th.ContrastBg
 	lightContrast.A = 0x11
 	darkContrast := th.ContrastBg
@@ -73,9 +72,12 @@ func ListStudent(th *material.Theme, state *state.State) Screen {
 	}
 
 	return func(gtx layout.Context) (Screen, layout.Dimensions) {
+		matCloseListBut := material.Button(th, &close, "Close")
+		matCloseListBut.Background = ButtonBackgroundMain()
+		matCloseListBut.Font = ButtonFontMain()
 		d := layout.Flex{Axis: layout.Vertical}.Layout(gtx,
 			layout.Flexed(1, rowInset(studentsLayout)),
-			layout.Rigid(rowInset(material.Button(th, &close, "Close").Layout)),
+			layout.Rigid(rowInset(matCloseListBut.Layout)),
 		)
 		if close.Clicked() {
 			return MainMenu(th, state), d
