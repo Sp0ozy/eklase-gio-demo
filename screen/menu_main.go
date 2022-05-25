@@ -19,16 +19,16 @@ func MainMenu(th *material.Theme, state *state.State) Screen {
 	return func(gtx layout.Context) (Screen, layout.Dimensions) {
 		matAddBut := material.Button(th, &add, "Add student")
 		matAddBut.Font = ButtonFontMain()
-		matAddBut.Background = ButtonBacgGroundMain()
+		matAddBut.Background = ButtonBackgroundMain()
 		matListBut := material.Button(th, &list, "List students")
 		matListBut.Font = ButtonFontMain()
-		matListBut.Background = ButtonBacgGroundMain()
+		matListBut.Background = ButtonBackgroundMain()
 		matExpBut := material.Button(th, &explorer, "Explore")
 		matExpBut.Font = ButtonFontMain()
-		matExpBut.Background = ButtonBacgGroundMain()
+		matExpBut.Background = ButtonBackgroundMain()
 		matQuitBut := material.Button(th, &quit, "Quit")
 		matQuitBut.Font = ButtonFontMain()
-		matQuitBut.Background = ButtonBacgGroundMain()
+		matQuitBut.Background = ButtonBackgroundMain()
 
 		d := layout.Flex{Axis: layout.Vertical}.Layout(gtx,
 			layout.Rigid(rowInset(matAddBut.Layout)),
