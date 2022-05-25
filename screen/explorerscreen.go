@@ -4,7 +4,9 @@ import (
 	"eklase/explorer"
 	"eklase/state"
 	"eklase/storage"
+	"fmt"
 	"image"
+	"strings"
 
 	"gioui.org/layout"
 	"gioui.org/op/clip"
@@ -34,8 +36,11 @@ func generateFileList(th *material.Theme, list widget.List, files []string, butt
 					return layout.Dimensions{Size: gtx.Constraints.Min}
 				}),
 				layout.Stacked(rowInset(func(gtx layout.Context) layout.Dimensions {
+					matListBut := material.Button(th, &button[index], file)
+					matListBut.Background = ButtonBackgroundMain()
+					matListBut.Font = ButtonFontMain()
 					return layout.Flex{}.Layout(gtx,
-						layout.Rigid(material.Button(th, &button[index], file).Layout),
+						layout.Rigid(matListBut.Layout),
 					)
 				})),
 			)
@@ -82,11 +87,13 @@ func Explorer(th *material.Theme, state *state.State) Screen {
 	return func(gtx layout.Context) (Screen, layout.Dimensions) {
 		matBackBut := material.Button(th, &back, "Back")
 		matBackBut.Font = ButtonFontMain()
-		matBackBut.Background = ButtonBacgGroundMain()
+		matBackBut.Background = ButtonBackgroundMain()
 		adressbar.SingleLine = true
 		matCloseBut := material.Button(th, &close, "Close")
 		matCloseBut.Font = ButtonFontMain()
-		matCloseBut.Background = ButtonBacgGroundMain()
+		matCloseBut.Background = ButtonBackgroundMain()
+		userpath := strings.TrimSpace(adressbar.Text())
+		fmt.Println(userpath)
 		d := layout.Flex{Axis: layout.Vertical}.Layout(gtx,
 			layout.Rigid(rowInset(material.Editor(th, &adressbar, explorer.Root(root)).Layout)),
 			layout.Flexed(1, rowInset(filesLayout)),
