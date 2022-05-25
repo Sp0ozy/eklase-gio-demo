@@ -37,10 +37,16 @@ func AddStudent(th *material.Theme, state *state.State) Screen {
 		)
 	}
 	buttonsRowLayout := func(gtx layout.Context) layout.Dimensions {
+		matCloseButAdd := material.Button(th, &close, "Close")
+		matCloseButAdd.Background = ButtonBackgroundMain()
+		matCloseButAdd.Font = ButtonFontMain()
+		matSaveButAdd := material.Button(th, &save, "Save")
+		matSaveButAdd.Background = ButtonBackgroundMain()
+		matSaveButAdd.Font = ButtonFontMain()
 		return layout.Flex{Axis: layout.Horizontal, Spacing: layout.SpaceStart}.Layout(gtx,
-			layout.Rigid(material.Button(th, &close, "Close").Layout),
+			layout.Rigid(matCloseButAdd.Layout),
 			layout.Rigid(spacer.Layout),
-			layout.Rigid(enabledIfNameOK(material.Button(th, &save, "Save").Layout)),
+			layout.Rigid(enabledIfNameOK(matSaveButAdd.Layout)),
 		)
 	}
 	return func(gtx layout.Context) (Screen, layout.Dimensions) {
